@@ -1,0 +1,29 @@
+footer {
+  color: white !important;
+  text-align: right;
+  font-size: 0.8em;
+  padding: 15px;
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  background: transparent !important;
+  z-index: 1000 !important;
+  display: block !important;
+}
+
+footer a {
+  color: white !important;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #BA4949 !important;
+}
+
+@media (max-width: 768px) {
+  footer {
+    font-size: 0.7em;
+    padding: 8px;
+  }
+}
