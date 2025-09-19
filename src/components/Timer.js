@@ -32,10 +32,10 @@ var Timer = function () {
     };
     var playStartSound = function () {
         try {
-            var audioFile = '/sounds/e-la-vamos-nos-hd.mp3'; // Som padrão para Pomodoro
+            var audioFile = '/pomofocus-clone/sounds/e-la-vamos-nos-hd.mp3'; // Som padrão para Pomodoro
             // Som diferente para pausas
             if (currentMode === 'short-break' || currentMode === 'long-break') {
-                audioFile = '/sounds/pica-pau-bolinha-de-golfe.mp3';
+                audioFile = '/pomofocus-clone/sounds/pica-pau-bolinha-de-golfe.mp3';
             }
             var audio = new Audio(audioFile);
             audio.volume = 0.5; // Volume em 50%

@@ -193,11 +193,11 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
       
       // Som de finalização baseado no modo
       try {
-        let audioFile = '/sounds/kassinao.mp3'; // Som para Pomodoro
+        let audioFile = '/pomofocus-clone/sounds/kassinao.mp3'; // Som para Pomodoro
         
         // Som diferente para pausas
         if (state.currentMode === 'short-break' || state.currentMode === 'long-break') {
-          audioFile = '/sounds/chaves-tema-triste.mp3';
+          audioFile = '/pomofocus-clone/sounds/chaves-tema-triste.mp3';
         }
         
         console.log('Tentando reproduzir áudio:', audioFile, 'para modo:', state.currentMode);

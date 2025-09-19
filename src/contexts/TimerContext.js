@@ -131,10 +131,10 @@ export function TimerProvider(_a) {
             }
             // Som de finalização baseado no modo
             try {
-                var audioFile_1 = '/sounds/kassinao.mp3'; // Som para Pomodoro
+                var audioFile_1 = '/pomofocus-clone/sounds/kassinao.mp3'; // Som para Pomodoro
                 // Som diferente para pausas
                 if (state.currentMode === 'short-break' || state.currentMode === 'long-break') {
-                    audioFile_1 = '/sounds/chaves-tema-triste.mp3';
+                    audioFile_1 = '/pomofocus-clone/sounds/chaves-tema-triste.mp3';
                 }
                 console.log('Tentando reproduzir áudio:', audioFile_1, 'para modo:', state.currentMode);
                 var audio_1 = new Audio(audioFile_1);

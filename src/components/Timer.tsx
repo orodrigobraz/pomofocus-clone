@@ -31,11 +31,11 @@ const Timer: React.FC = () => {
 
   const playStartSound = () => {
     try {
-      let audioFile = '/sounds/e-la-vamos-nos-hd.mp3'; // Som padrão para Pomodoro
+      let audioFile = '/pomofocus-clone/sounds/e-la-vamos-nos-hd.mp3'; // Som padrão para Pomodoro
       
       // Som diferente para pausas
       if (currentMode === 'short-break' || currentMode === 'long-break') {
-        audioFile = '/sounds/pica-pau-bolinha-de-golfe.mp3';
+        audioFile = '/pomofocus-clone/sounds/pica-pau-bolinha-de-golfe.mp3';
       }
       
       const audio = new Audio(audioFile);
