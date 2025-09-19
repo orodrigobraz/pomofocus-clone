@@ -20,6 +20,7 @@ const Tasks: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [taskName, setTaskName] = useState('');
   const [estimatedPomodoros, setEstimatedPomodoros] = useState(1);
+  const [isImportant, setIsImportant] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleAddTask = () => {
@@ -27,9 +28,11 @@ const Tasks: React.FC = () => {
       addTask({
         name: taskName.trim(),
         estimatedPomodoros,
+        isImportant,
       });
       setTaskName('');
       setEstimatedPomodoros(1);
+      setIsImportant(false);
       setShowModal(false);
     }
   };
@@ -176,7 +179,14 @@ const Tasks: React.FC = () => {
                   <i className={`fas ${task.isCompleted ? 'fa-check' : 'fa-circle'}`}></i>
                 </button>
                 <div className="task-info">
-                  <span className="task-name">{task.name}</span>
+                  <div className="task-name-container">
+                    <span className="task-name">{task.name}</span>
+                    {task.isImportant && (
+                      <span className="importance-indicator" title="Tarefa importante">
+                        <i className="fas fa-exclamation-triangle"></i>
+                      </span>
+                    )}
+                  </div>
                   <span className="task-pomodoros">
                     {task.completedPomodoros}/{task.estimatedPomodoros} pomodoros
                   </span>
@@ -225,6 +235,17 @@ const Tasks: React.FC = () => {
                   value={estimatedPomodoros}
                   onChange={(e) => setEstimatedPomodoros(parseInt(e.target.value) || 1)}
                 />
+              </div>
+              <div className="importance-checkbox">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={isImportant}
+                    onChange={(e) => setIsImportant(e.target.checked)}
+                  />
+                  <span className="checkmark"></span>
+                  <span className="checkbox-text">Marcar como importante</span>
+                </label>
               </div>
             </div>
             <div className="modal-footer">

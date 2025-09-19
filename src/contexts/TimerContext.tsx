@@ -280,13 +280,14 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
   const resetTimer = () => dispatch({ type: 'RESET_TIMER' });
   const switchMode = (mode: TimerMode) => dispatch({ type: 'SWITCH_MODE', payload: mode });
   
-  const addTask = (taskData: Omit<Task, 'id' | 'createdAt' | 'completedPomodoros' | 'isCompleted'>) => {
+  const addTask = (taskData: Omit<Task, 'id' | 'createdAt' | 'completedPomodoros' | 'isCompleted' | 'isImportant'>) => {
     const newTask: Task = {
       ...taskData,
       id: Date.now().toString(),
       createdAt: new Date(),
       completedPomodoros: 0,
       isCompleted: false,
+      isImportant: false,
     };
     dispatch({ type: 'ADD_TASK', payload: newTask });
   };

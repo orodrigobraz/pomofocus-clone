@@ -182,7 +182,7 @@ export function TimerProvider(_a) {
     var resetTimer = function () { return dispatch({ type: 'RESET_TIMER' }); };
     var switchMode = function (mode) { return dispatch({ type: 'SWITCH_MODE', payload: mode }); };
     var addTask = function (taskData) {
-        var newTask = __assign(__assign({}, taskData), { id: Date.now().toString(), createdAt: new Date(), completedPomodoros: 0, isCompleted: false });
+        var newTask = __assign(__assign({}, taskData), { id: Date.now().toString(), createdAt: new Date(), completedPomodoros: 0, isCompleted: false, isImportant: false });
         dispatch({ type: 'ADD_TASK', payload: newTask });
     };
     var updateTask = function (id, updates) {

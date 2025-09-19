@@ -4,6 +4,7 @@ export interface Task {
   estimatedPomodoros: number;
   completedPomodoros: number;
   isCompleted: boolean;
+  isImportant: boolean;
   createdAt: Date;
 }
 
