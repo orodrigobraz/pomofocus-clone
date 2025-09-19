@@ -181,7 +181,7 @@ const Tasks: React.FC = () => {
                 <div className="task-info">
                   <div className="task-name-container">
                     <span className="task-name">{task.name}</span>
-                    {task.isImportant && (
+                    {(task.isImportant === true) && (
                       <span className="importance-indicator" title="Tarefa importante">
                         <i className="fas fa-exclamation-triangle"></i>
                       </span>
