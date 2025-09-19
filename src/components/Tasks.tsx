@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTimer } from '../contexts/TimerContext';
 import { Task } from '../types';
 import './Tasks.css';
 
 const Tasks: React.FC = () => {
-  const { tasks, addTask, updateTask, deleteTask, completeTask } = useTimer();
+  const { 
+    tasks, 
+    addTask, 
+    updateTask, 
+    deleteTask, 
+    completeTask,
+    deleteAllTasks,
+    deleteCompletedTasks,
+    deleteIncompleteTasks,
+    markAllTasksComplete,
+    markAllTasksIncomplete
+  } = useTimer();
   const [showModal, setShowModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [taskName, setTaskName] = useState('');
   const [estimatedPomodoros, setEstimatedPomodoros] = useState(1);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleAddTask = () => {
     if (taskName.trim()) {
@@ -35,13 +48,106 @@ const Tasks: React.FC = () => {
     }
   };
 
+  // Fechar dropdown quando clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleDropdownToggle = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleDeleteAllTasks = () => {
+    if (window.confirm('Tem certeza que deseja deletar todas as tarefas?')) {
+      deleteAllTasks();
+    }
+    setShowDropdown(false);
+  };
+
+  const handleDeleteCompletedTasks = () => {
+    if (window.confirm('Tem certeza que deseja deletar todas as tarefas concluídas?')) {
+      deleteCompletedTasks();
+    }
+    setShowDropdown(false);
+  };
+
+  const handleDeleteIncompleteTasks = () => {
+    if (window.confirm('Tem certeza que deseja deletar todas as tarefas não concluídas?')) {
+      deleteIncompleteTasks();
+    }
+    setShowDropdown(false);
+  };
+
+  const handleMarkAllComplete = () => {
+    markAllTasksComplete();
+    setShowDropdown(false);
+  };
+
+  const handleMarkAllIncomplete = () => {
+    markAllTasksIncomplete();
+    setShowDropdown(false);
+  };
+
   return (
     <div className="tasks-section">
       <div className="tasks-header">
         <h3>Tarefas</h3>
-        <button className="tasks-options">
-          <i className="fas fa-ellipsis-v"></i>
-        </button>
+        <div className="tasks-options-container" ref={dropdownRef}>
+          <button 
+            className="tasks-options"
+            onClick={handleDropdownToggle}
+          >
+            <i className="fas fa-ellipsis-v"></i>
+          </button>
+          {showDropdown && (
+            <div className="tasks-dropdown">
+              <button 
+                className="dropdown-item"
+                onClick={handleDeleteAllTasks}
+              >
+                <i className="fas fa-trash"></i>
+                Deletar todas as tarefas
+              </button>
+              <button 
+                className="dropdown-item"
+                onClick={handleDeleteCompletedTasks}
+              >
+                <i className="fas fa-check-circle"></i>
+                Deletar tarefas concluídas
+              </button>
+              <button 
+                className="dropdown-item"
+                onClick={handleDeleteIncompleteTasks}
+              >
+                <i className="fas fa-circle"></i>
+                Deletar tarefas não concluídas
+              </button>
+              <button 
+                className="dropdown-item"
+                onClick={handleMarkAllComplete}
+              >
+                <i className="fas fa-check-double"></i>
+                Marcar todas como concluídas
+              </button>
+              <button 
+                className="dropdown-item"
+                onClick={handleMarkAllIncomplete}
+              >
+                <i className="fas fa-undo"></i>
+                Desmarcar todas as concluídas
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="add-task">

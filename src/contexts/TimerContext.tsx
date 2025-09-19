@@ -10,6 +10,11 @@ interface TimerContextType extends AppState {
   updateTask: (id: string, updates: Partial<Task>) => void;
   deleteTask: (id: string) => void;
   completeTask: (id: string) => void;
+  deleteAllTasks: () => void;
+  deleteCompletedTasks: () => void;
+  deleteIncompleteTasks: () => void;
+  markAllTasksComplete: () => void;
+  markAllTasksIncomplete: () => void;
 }
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
@@ -58,7 +63,12 @@ type TimerAction =
   | { type: 'DELETE_TASK'; payload: string }
   | { type: 'COMPLETE_TASK'; payload: string }
   | { type: 'COMPLETE_POMODORO' }
-  | { type: 'TRANSITION_TO_NEXT_MODE' };
+  | { type: 'TRANSITION_TO_NEXT_MODE' }
+  | { type: 'DELETE_ALL_TASKS' }
+  | { type: 'DELETE_COMPLETED_TASKS' }
+  | { type: 'DELETE_INCOMPLETE_TASKS' }
+  | { type: 'MARK_ALL_TASKS_COMPLETE' }
+  | { type: 'MARK_ALL_TASKS_INCOMPLETE' };
 
 function timerReducer(state: AppState, action: TimerAction): AppState {
   switch (action.type) {
@@ -127,6 +137,36 @@ function timerReducer(state: AppState, action: TimerAction): AppState {
             ? { ...task, isCompleted: !task.isCompleted }
             : task
         ),
+      };
+    
+    case 'DELETE_ALL_TASKS':
+      return {
+        ...state,
+        tasks: [],
+      };
+    
+    case 'DELETE_COMPLETED_TASKS':
+      return {
+        ...state,
+        tasks: state.tasks.filter(task => !task.isCompleted),
+      };
+    
+    case 'DELETE_INCOMPLETE_TASKS':
+      return {
+        ...state,
+        tasks: state.tasks.filter(task => task.isCompleted),
+      };
+    
+    case 'MARK_ALL_TASKS_COMPLETE':
+      return {
+        ...state,
+        tasks: state.tasks.map(task => ({ ...task, isCompleted: true })),
+      };
+    
+    case 'MARK_ALL_TASKS_INCOMPLETE':
+      return {
+        ...state,
+        tasks: state.tasks.map(task => ({ ...task, isCompleted: false })),
       };
     
     case 'TRANSITION_TO_NEXT_MODE':
@@ -263,6 +303,26 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'COMPLETE_TASK', payload: id });
   };
 
+  const deleteAllTasks = () => {
+    dispatch({ type: 'DELETE_ALL_TASKS' });
+  };
+
+  const deleteCompletedTasks = () => {
+    dispatch({ type: 'DELETE_COMPLETED_TASKS' });
+  };
+
+  const deleteIncompleteTasks = () => {
+    dispatch({ type: 'DELETE_INCOMPLETE_TASKS' });
+  };
+
+  const markAllTasksComplete = () => {
+    dispatch({ type: 'MARK_ALL_TASKS_COMPLETE' });
+  };
+
+  const markAllTasksIncomplete = () => {
+    dispatch({ type: 'MARK_ALL_TASKS_INCOMPLETE' });
+  };
+
   return (
     <TimerContext.Provider
       value={{
@@ -275,6 +335,11 @@ export function TimerProvider({ children }: { children: React.ReactNode }) {
         updateTask,
         deleteTask,
         completeTask,
+        deleteAllTasks,
+        deleteCompletedTasks,
+        deleteIncompleteTasks,
+        markAllTasksComplete,
+        markAllTasksIncomplete,
       }}
     >
       {children}

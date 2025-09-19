@@ -83,6 +83,16 @@ function timerReducer(state, action) {
                     return task.id === action.payload
                         ? __assign(__assign({}, task), { isCompleted: !task.isCompleted }) : task;
                 }) });
+        case 'DELETE_ALL_TASKS':
+            return __assign(__assign({}, state), { tasks: [] });
+        case 'DELETE_COMPLETED_TASKS':
+            return __assign(__assign({}, state), { tasks: state.tasks.filter(function (task) { return !task.isCompleted; }) });
+        case 'DELETE_INCOMPLETE_TASKS':
+            return __assign(__assign({}, state), { tasks: state.tasks.filter(function (task) { return task.isCompleted; }) });
+        case 'MARK_ALL_TASKS_COMPLETE':
+            return __assign(__assign({}, state), { tasks: state.tasks.map(function (task) { return (__assign(__assign({}, task), { isCompleted: true })); }) });
+        case 'MARK_ALL_TASKS_INCOMPLETE':
+            return __assign(__assign({}, state), { tasks: state.tasks.map(function (task) { return (__assign(__assign({}, task), { isCompleted: false })); }) });
         case 'TRANSITION_TO_NEXT_MODE':
             var newCompletedPomodoros = state.currentMode === 'pomodoro'
                 ? state.completedPomodoros + 1
@@ -184,7 +194,22 @@ export function TimerProvider(_a) {
     var completeTask = function (id) {
         dispatch({ type: 'COMPLETE_TASK', payload: id });
     };
-    return (_jsx(TimerContext.Provider, __assign({ value: __assign(__assign({}, state), { startTimer: startTimer, pauseTimer: pauseTimer, resetTimer: resetTimer, switchMode: switchMode, addTask: addTask, updateTask: updateTask, deleteTask: deleteTask, completeTask: completeTask }) }, { children: children })));
+    var deleteAllTasks = function () {
+        dispatch({ type: 'DELETE_ALL_TASKS' });
+    };
+    var deleteCompletedTasks = function () {
+        dispatch({ type: 'DELETE_COMPLETED_TASKS' });
+    };
+    var deleteIncompleteTasks = function () {
+        dispatch({ type: 'DELETE_INCOMPLETE_TASKS' });
+    };
+    var markAllTasksComplete = function () {
+        dispatch({ type: 'MARK_ALL_TASKS_COMPLETE' });
+    };
+    var markAllTasksIncomplete = function () {
+        dispatch({ type: 'MARK_ALL_TASKS_INCOMPLETE' });
+    };
+    return (_jsx(TimerContext.Provider, __assign({ value: __assign(__assign({}, state), { startTimer: startTimer, pauseTimer: pauseTimer, resetTimer: resetTimer, switchMode: switchMode, addTask: addTask, updateTask: updateTask, deleteTask: deleteTask, completeTask: completeTask, deleteAllTasks: deleteAllTasks, deleteCompletedTasks: deleteCompletedTasks, deleteIncompleteTasks: deleteIncompleteTasks, markAllTasksComplete: markAllTasksComplete, markAllTasksIncomplete: markAllTasksIncomplete }) }, { children: children })));
 }
 export function useTimer() {
     var context = useContext(TimerContext);
